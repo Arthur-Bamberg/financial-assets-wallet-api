@@ -8,6 +8,7 @@ const envSchema = z.object({
   DB_USERNAME: z.string(),
   DB_PASSWORD: z.string(),
   DATABASE_URL: z.string(),
+  SALT: z.string(),
 });
 
 type ENVIRONMENT = z.infer<typeof envSchema>;
