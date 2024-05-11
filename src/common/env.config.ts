@@ -9,6 +9,7 @@ const envSchema = z.object({
   DB_PASSWORD: z.string(),
   DATABASE_URL: z.string(),
   SALT: z.string(),
+  JWT_SECRET: z.string(),
 });
 
 type ENVIRONMENT = z.infer<typeof envSchema>;

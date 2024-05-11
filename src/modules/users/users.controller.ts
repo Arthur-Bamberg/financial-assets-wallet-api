@@ -11,12 +11,14 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { HashPasswordPipe } from 'src/common/pipes/hash-password.pipe';
+import { IsPublic } from 'src/modules/auth/decorators/is-public.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @IsPublic()
   async create(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Body() { password, ...userData }: CreateUserDto,
