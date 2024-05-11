@@ -44,15 +44,15 @@ model Asset {
 }
 
 model Wallet {
-  id              String        @id @default(uuid())
-  name            String
-  description     String
-  amount_invested Float
-  user_id         String
-  user            User          @relation(fields: [user_id], references: [id])
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt
-  wallets_assets  WalletAsset[]
+  id             String        @id @default(uuid())
+  name           String
+  description    String
+  amount         Float
+  user_id        String
+  user           User          @relation(fields: [user_id], references: [id])
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+  wallets_assets WalletAsset[]
 
   @@map("wallets")
 }
@@ -63,7 +63,7 @@ model WalletAsset {
   wallet_id     String
   price_ceiling Float
   rank          Int
-  bias          Float
+  bias          String
   quantity      Float
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt

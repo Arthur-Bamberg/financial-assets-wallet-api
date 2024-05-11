@@ -4,9 +4,10 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt.guard';
 import { JwtStrategy } from './modules/auth/strategies/jwt.strategy';
+import { WalletsModule } from './modules/wallets/wallets.module';
 
 @Module({
-  imports: [UsersModule, AuthModule],
+  imports: [UsersModule, AuthModule, WalletsModule],
   providers: [
     {
       provide: APP_INTERCEPTOR,
