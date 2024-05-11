@@ -1,0 +1,14 @@
+import z from 'zod';
+import { config } from 'dotenv';
+
+config();
+
+const envSchema = z.object({
+  DB_NAME: z.string(),
+  DB_USERNAME: z.string(),
+  DB_PASSWORD: z.string(),
+  DATABASE_URL: z.string(),
+});
+
+type ENVIRONMENT = z.infer<typeof envSchema>;
+export const ENV: ENVIRONMENT = envSchema.parse(process.env);

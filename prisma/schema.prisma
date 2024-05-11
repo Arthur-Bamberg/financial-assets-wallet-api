@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  wallets    Wallet[]
+
+  @@map("users")
+}
+
+model Type {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  assets      Asset[]
+
+  @@map("types")
+}
+
+model Asset {
+  id             String        @id @default(uuid())
+  short_name     String
+  full_name      String
+  type_id        String
+  type           Type          @relation(fields: [type_id], references: [id])
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+  wallets_assets WalletAsset[]
+
+  @@map("assets")
+}
+
+model Wallet {
+  id              String        @id @default(uuid())
+  name            String
+  description     String
+  amount_invested Float
+  user_id         String
+  user            User          @relation(fields: [user_id], references: [id])
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
+  wallets_assets  WalletAsset[]
+
+  @@map("wallets")
+}
+
+model WalletAsset {
+  id            String   @id @default(uuid())
+  asset_id      String
+  wallet_id     String
+  price_ceiling Float
+  rank          Int
+  bias          Float
+  quantity      Float
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  asset         Asset    @relation(fields: [asset_id], references: [id])
+  wallet        Wallet   @relation(fields: [wallet_id], references: [id])
+
+  @@unique([asset_id, wallet_id])
+  @@map("wallets_assets")
+}
