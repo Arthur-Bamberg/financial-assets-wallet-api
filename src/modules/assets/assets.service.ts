@@ -28,7 +28,7 @@ export class AssetsService {
 
         await this.prismaService.asset.update({
           where: { id: asset.id },
-          data: { price, updated_at: new Date() },
+          data: { price },
         });
       }),
     );

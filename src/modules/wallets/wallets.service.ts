@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateWalletDto } from './dto/create-wallet.dto';
-import { UpdateWalletDto } from './dto/update-wallet.dto';
+import { UpdateWalletAssetDto } from './dto/update-wallet-asset.dto';
 import { PrismaService } from 'src/common/services/prisma.service';
 import { AddAssetDto } from './dto/add-asset.dto';
 import { AssetsService } from '../assets/assets.service';
@@ -46,9 +46,7 @@ export class WalletsService {
     return `This action returns all wallets`;
   }
 
-  async findOne(walletId: string, userId: string) {
-    await this.validateWalletOwnership(walletId, userId);
-
+  async findOne(walletId: string) {
     await this.assetsService.updatePrices(walletId);
 
     return await this.prismaService.wallet.findUnique({
@@ -68,8 +66,20 @@ export class WalletsService {
     });
   }
 
-  update(id: number, updateWalletDto: UpdateWalletDto) {
-    return `This action updates a #${id} wallet`;
+  async updateWalletAsset(
+    walletId: string,
+    assetId: string,
+    updateWalletAssetDto: UpdateWalletAssetDto,
+  ) {
+    return await this.prismaService.walletAsset.update({
+      data: updateWalletAssetDto,
+      where: {
+        asset_id_wallet_id: {
+          asset_id: assetId,
+          wallet_id: walletId,
+        },
+      },
+    });
   }
 
   remove(id: number) {
