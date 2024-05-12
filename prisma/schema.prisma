@@ -48,7 +48,6 @@ model Wallet {
   id             String        @id @default(uuid())
   name           String
   description    String
-  amount         Float
   user_id        String
   user           User          @relation(fields: [user_id], references: [id])
   created_at     DateTime      @default(now())

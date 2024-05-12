@@ -42,8 +42,8 @@ export class WalletsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.walletsService.findOne(+id);
+  async findOne(@Param('id') walletId: string, @Req() req: RequestWithUser) {
+    return await this.walletsService.findOne(walletId, req.user.sub);
   }
 
   @Patch(':id')

@@ -3,16 +3,19 @@ import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { PrismaService } from 'src/common/services/prisma.service';
 import { AddAssetDto } from './dto/add-asset.dto';
+import { AssetsService } from '../assets/assets.service';
 
 @Injectable()
 export class WalletsService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly assetsService: AssetsService,
+  ) {}
 
   async create(createWalletDto: CreateWalletDto, userId: string) {
     return await this.prismaService.wallet.create({
       data: {
         user_id: userId,
-        amount: 0,
         ...createWalletDto,
       },
     });
@@ -43,8 +46,26 @@ export class WalletsService {
     return `This action returns all wallets`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} wallet`;
+  async findOne(walletId: string, userId: string) {
+    await this.validateWalletOwnership(walletId, userId);
+
+    await this.assetsService.updatePrices(walletId);
+
+    return await this.prismaService.wallet.findUnique({
+      include: {
+        wallets_assets: {
+          orderBy: { rank: 'asc' },
+          include: {
+            asset: {
+              include: {
+                type: true,
+              },
+            },
+          },
+        },
+      },
+      where: { id: walletId },
+    });
   }
 
   update(id: number, updateWalletDto: UpdateWalletDto) {

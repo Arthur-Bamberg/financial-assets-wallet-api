@@ -27,3 +27,8 @@ export const validateDTO = async <T>(
 
   return errorMessages;
 };
+
+export const subtractMinutes = (minutes: number): Date => {
+  const currentDate = new Date();
+  return new Date(currentDate.getTime() - minutes * 60000);
+};

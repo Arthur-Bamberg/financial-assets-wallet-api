@@ -5,9 +5,10 @@ import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt.guard';
 import { JwtStrategy } from './modules/auth/strategies/jwt.strategy';
 import { WalletsModule } from './modules/wallets/wallets.module';
+import { AssetsModule } from './modules/assets/assets.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, WalletsModule],
+  imports: [UsersModule, AuthModule, WalletsModule, AssetsModule],
   providers: [
     {
       provide: APP_INTERCEPTOR,
