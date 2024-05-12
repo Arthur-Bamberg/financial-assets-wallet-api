@@ -34,6 +34,7 @@ model Asset {
   id             String        @id @default(uuid())
   short_name     String
   full_name      String
+  price          Float
   type_id        String
   type           Type          @relation(fields: [type_id], references: [id])
   created_at     DateTime      @default(now())
@@ -61,10 +62,10 @@ model WalletAsset {
   id            String   @id @default(uuid())
   asset_id      String
   wallet_id     String
-  price_ceiling Float
+  price_ceiling Float?
   rank          Int
   bias          String
-  quantity      Float
+  quantity      Int
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
   asset         Asset    @relation(fields: [asset_id], references: [id])
