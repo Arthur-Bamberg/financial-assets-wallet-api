@@ -71,6 +71,18 @@ export class WalletsService {
     assetId: string,
     updateWalletAssetDto: UpdateWalletAssetDto,
   ) {
+    const walletAsset = await this.prismaService.walletAsset.findUnique({
+      where: {
+        asset_id_wallet_id: {
+          asset_id: assetId,
+          wallet_id: walletId,
+        },
+      },
+    });
+
+    if (!walletAsset)
+      throw new NotFoundException('Ativo não encontrado na carteira');
+
     return await this.prismaService.walletAsset.update({
       data: updateWalletAssetDto,
       where: {
