@@ -10,6 +10,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string(),
   SALT: z.string(),
   JWT_SECRET: z.string(),
+  FINANCE_API_TOKEN: z.string(),
 });
 
 type ENVIRONMENT = z.infer<typeof envSchema>;

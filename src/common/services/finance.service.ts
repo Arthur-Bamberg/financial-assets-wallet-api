@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import yahooFinance from 'yahoo-finance2';
+import axios from 'axios';
+import { ENV } from '../env.config';
 
 @Injectable()
 export class FinanceService {
   async getStockValue(shortName: string): Promise<number | undefined> {
     return (
-      await yahooFinance.quoteSummary(shortName + '.SA', {
-        modules: ['price'],
-      })
-    ).price?.regularMarketPrice;
+      await axios.get<{ results: [{ regularMarketPrice: number }] }>(
+        `https://brapi.dev/api/quote/${shortName}?token=${ENV.FINANCE_API_TOKEN}`,
+      )
+    ).data.results[0].regularMarketPrice;
   }
 }
