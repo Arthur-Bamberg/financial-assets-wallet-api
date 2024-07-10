@@ -91,7 +91,7 @@ async function main() {
   }
 }
 
-async function getTypeByName(typeName: string): Promise<string> {
+async function getTypeByName(typeName: string): Promise<number> {
   const type = await prisma.type.findFirst({
     where: {
       name: typeName,

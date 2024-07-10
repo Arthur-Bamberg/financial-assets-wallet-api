@@ -12,7 +12,7 @@ export class WalletsService {
     private readonly assetsService: AssetsService,
   ) {}
 
-  async create(createWalletDto: CreateWalletDto, userId: string) {
+  async create(createWalletDto: CreateWalletDto, userId: number) {
     return await this.prismaService.wallet.create({
       data: {
         user_id: userId,
@@ -21,7 +21,7 @@ export class WalletsService {
     });
   }
 
-  async validateWalletOwnership(walletId: string, userId: string) {
+  async validateWalletOwnership(walletId: number, userId: number) {
     const wallet = await this.prismaService.wallet.findFirst({
       where: {
         id: walletId,
@@ -33,7 +33,7 @@ export class WalletsService {
       throw new NotFoundException('Carteira não encontrada para este usuário');
   }
 
-  async addAsset(walletId: string, addAssetDto: AddAssetDto) {
+  async addAsset(walletId: number, addAssetDto: AddAssetDto) {
     return await this.prismaService.walletAsset.create({
       data: {
         wallet_id: walletId,
@@ -46,7 +46,7 @@ export class WalletsService {
     return `This action returns all wallets`;
   }
 
-  async findOne(walletId: string) {
+  async findOne(walletId: number) {
     await this.assetsService.updatePrices(walletId);
 
     return await this.prismaService.wallet.findUnique({
@@ -67,8 +67,8 @@ export class WalletsService {
   }
 
   async updateWalletAsset(
-    walletId: string,
-    assetId: string,
+    walletId: number,
+    assetId: number,
     updateWalletAssetDto: UpdateWalletAssetDto,
   ) {
     const walletAsset = await this.prismaService.walletAsset.findUnique({

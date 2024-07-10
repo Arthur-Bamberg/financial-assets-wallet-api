@@ -10,7 +10,7 @@ export class AssetsService {
     private readonly financeService: FinanceService,
   ) {}
 
-  async updatePrices(walletId: string): Promise<void> {
+  async updatePrices(walletId: number): Promise<void> {
     const tenMinutesAgo = subtractMinutes(10);
 
     const assets = await this.prismaService.asset.findMany({

@@ -5,13 +5,15 @@ import {
   Length,
   IsNumber,
   ValidateIf,
-  IsUUID,
   IsOptional,
+  IsPositive,
 } from 'class-validator';
 
 export class AddAssetDto {
-  @IsUUID(4, { message: '`asset_id` deve ser um UUID válido.' })
-  asset_id: string;
+  @IsNumber({}, { message: '`asset_id` deve ser um número.' })
+  @IsInt({ message: '`asset_id` deve ser um número inteiro.' })
+  @IsPositive({ message: '`asset_id` deve ser um número positivo.' })
+  asset_id: number;
 
   @IsOptional()
   @ValidateIf((o) => o.price_ceiling != null)

@@ -7,8 +7,8 @@ import {
   Param,
   Delete,
   Req,
-  ParseUUIDPipe,
   BadRequestException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { WalletsService } from './wallets.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
@@ -32,15 +32,14 @@ export class WalletsController {
   async addAsset(
     @Param(
       'id',
-      new ParseUUIDPipe({
-        version: '4',
+      new ParseIntPipe({
         exceptionFactory: () =>
           new BadRequestException(
-            'O id da carteira deve UUID deve ser válido e da versão 4',
+            'O id da carteira deve ser um número inteiro válido',
           ),
       }),
     )
-    id: string,
+    id: number,
     @Body() addAssetDto: AddAssetDto,
     @Req() req: RequestWithUser,
   ) {
@@ -52,26 +51,24 @@ export class WalletsController {
   async update(
     @Param(
       'walletId',
-      new ParseUUIDPipe({
-        version: '4',
+      new ParseIntPipe({
         exceptionFactory: () =>
           new BadRequestException(
-            'O id da carteira deve UUID deve ser válido e da versão 4',
+            'O id da carteira deve ser um número inteiro válido',
           ),
       }),
     )
-    walletId: string,
+    walletId: number,
     @Param(
       'assetId',
-      new ParseUUIDPipe({
-        version: '4',
+      new ParseIntPipe({
         exceptionFactory: () =>
           new BadRequestException(
-            'O id do ativo deve UUID deve ser válido e da versão 4',
+            'O id do ativo deve ser um número inteiro válido',
           ),
       }),
     )
-    assetId: string,
+    assetId: number,
     @Body() updateWalletAssetDto: UpdateWalletAssetDto,
     @Req() req: RequestWithUser,
   ) {
@@ -84,7 +81,7 @@ export class WalletsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') walletId: string, @Req() req: RequestWithUser) {
+  async findOne(@Param('id') walletId: number, @Req() req: RequestWithUser) {
     await this.walletsService.validateWalletOwnership(walletId, req.user.sub);
     return await this.walletsService.findOne(walletId);
   }

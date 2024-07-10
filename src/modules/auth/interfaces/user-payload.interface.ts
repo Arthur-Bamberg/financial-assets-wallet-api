@@ -1,4 +1,4 @@
 export interface UserPayload {
-  sub: string;
+  sub: number;
   name: string;
 }

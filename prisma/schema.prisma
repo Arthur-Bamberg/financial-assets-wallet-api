@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
+  id         Int      @id @default(autoincrement())
   name       String
   email      String   @unique
   password   String
@@ -20,7 +20,7 @@ model User {
 }
 
 model Type {
-  id          String   @id @default(uuid())
+  id          Int      @id @default(autoincrement())
   name        String
   description String
   created_at  DateTime @default(now())
@@ -31,11 +31,11 @@ model Type {
 }
 
 model Asset {
-  id             String        @id @default(uuid())
+  id             Int           @id @default(autoincrement())
   short_name     String
   full_name      String
   price          Float
-  type_id        String
+  type_id        Int
   type           Type          @relation(fields: [type_id], references: [id])
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
@@ -45,10 +45,10 @@ model Asset {
 }
 
 model Wallet {
-  id             String        @id @default(uuid())
+  id             Int           @id @default(autoincrement())
   name           String
   description    String
-  user_id        String
+  user_id        Int
   user           User          @relation(fields: [user_id], references: [id])
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
@@ -58,9 +58,9 @@ model Wallet {
 }
 
 model WalletAsset {
-  id            String   @id @default(uuid())
-  asset_id      String
-  wallet_id     String
+  id            Int      @id @default(autoincrement())
+  asset_id      Int
+  wallet_id     Int
   price_ceiling Float?
   rank          Int
   bias          String
