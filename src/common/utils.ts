@@ -32,3 +32,7 @@ export const subtractMinutes = (minutes: number): Date => {
   const currentDate = new Date();
   return new Date(currentDate.getTime() - minutes * 60000);
 };
+
+export const isNumberValid = (value: number): boolean => {
+  return !isNaN(value) && isFinite(value);
+};

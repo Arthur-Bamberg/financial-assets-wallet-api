@@ -15,6 +15,7 @@ import { CreateWalletDto } from './dto/create-wallet.dto';
 import { RequestWithUser } from '../auth/interfaces/request-with-user.interface';
 import { AddAssetDto } from './dto/add-asset.dto';
 import { UpdateWalletAssetDto } from './dto/update-wallet-asset.dto';
+import { isNumberValid } from 'src/common/utils';
 
 @Controller('wallets')
 export class WalletsController {
@@ -43,6 +44,9 @@ export class WalletsController {
     @Body() addAssetDto: AddAssetDto,
     @Req() req: RequestWithUser,
   ) {
+    if (!isNumberValid(id))
+      throw new BadRequestException('Id da carteira inválido');
+
     await this.walletsService.validateWalletOwnership(id, req.user.sub);
     return await this.walletsService.addAsset(id, addAssetDto);
   }
@@ -72,6 +76,12 @@ export class WalletsController {
     @Body() updateWalletAssetDto: UpdateWalletAssetDto,
     @Req() req: RequestWithUser,
   ) {
+    if (!isNumberValid(walletId))
+      throw new BadRequestException('Id da carteira inválido');
+
+    if (!isNumberValid(assetId))
+      throw new BadRequestException('Id do ativo inválido');
+
     await this.walletsService.validateWalletOwnership(walletId, req.user.sub);
     return await this.walletsService.updateWalletAsset(
       walletId,
@@ -82,6 +92,9 @@ export class WalletsController {
 
   @Get(':id')
   async findOne(@Param('id') walletId: number, @Req() req: RequestWithUser) {
+    if (!isNumberValid(walletId))
+      throw new BadRequestException('Id da carteira inválido');
+
     await this.walletsService.validateWalletOwnership(walletId, req.user.sub);
     return await this.walletsService.findOne(walletId);
   }
