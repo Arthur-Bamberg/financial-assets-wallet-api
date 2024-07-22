@@ -83,15 +83,28 @@ export class WalletsService {
     if (!walletAsset)
       throw new NotFoundException('Ativo não encontrado na carteira');
 
-    return await this.prismaService.walletAsset.update({
-      data: updateWalletAssetDto,
-      where: {
-        asset_id_wallet_id: {
-          asset_id: assetId,
-          wallet_id: walletId,
+    const [walletAssetUpdated] = await Promise.all([
+      this.prismaService.walletAsset.update({
+        data: updateWalletAssetDto,
+        where: {
+          asset_id_wallet_id: {
+            asset_id: assetId,
+            wallet_id: walletId,
+          },
         },
-      },
-    });
+      }),
+      this.prismaService.walletAssetHistory.create({
+        data: {
+          wallet_asset_id: walletAsset.id,
+          bias: walletAsset.bias,
+          price_ceiling: walletAsset.price_ceiling,
+          quantity: walletAsset.quantity,
+          rank: walletAsset.rank,
+        },
+      }),
+    ]);
+
+    return walletAssetUpdated;
   }
 
   remove(id: number) {

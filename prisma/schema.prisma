@@ -58,18 +58,32 @@ model Wallet {
 }
 
 model WalletAsset {
-  id            Int      @id @default(autoincrement())
-  asset_id      Int
-  wallet_id     Int
-  price_ceiling Float?
-  rank          Int
-  bias          String
-  quantity      Int
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-  asset         Asset    @relation(fields: [asset_id], references: [id])
-  wallet        Wallet   @relation(fields: [wallet_id], references: [id])
+  id                 Int                  @id @default(autoincrement())
+  asset_id           Int
+  wallet_id          Int
+  price_ceiling      Float?
+  rank               Int
+  bias               String
+  quantity           Int
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  asset              Asset                @relation(fields: [asset_id], references: [id])
+  wallet             Wallet               @relation(fields: [wallet_id], references: [id])
+  WalletAssetHistory WalletAssetHistory[]
 
   @@unique([asset_id, wallet_id])
   @@map("wallets_assets")
+}
+
+model WalletAssetHistory {
+  id              Int         @id @default(autoincrement())
+  wallet_asset_id Int
+  price_ceiling   Float?
+  rank            Int
+  bias            String
+  quantity        Int
+  created_at      DateTime    @default(now())
+  wallet_asset    WalletAsset @relation(fields: [wallet_asset_id], references: [id])
+
+  @@map("wallets_assets_history")
 }
