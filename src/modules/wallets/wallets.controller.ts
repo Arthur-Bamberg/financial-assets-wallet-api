@@ -100,8 +100,8 @@ export class WalletsController {
   }
 
   @Get()
-  findAll() {
-    return this.walletsService.findAll();
+  async findAll(@Req() req: RequestWithUser) {
+    return this.walletsService.findAll(req.user.sub);
   }
 
   @Delete(':id')
