@@ -36,3 +36,7 @@ export const subtractMinutes = (minutes: number): Date => {
 export const isNumberValid = (value: number): boolean => {
   return !isNaN(value) && isFinite(value);
 };
+
+export const delay = (seconds: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+};

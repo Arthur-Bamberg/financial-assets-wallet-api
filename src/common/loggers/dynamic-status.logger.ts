@@ -1,4 +1,4 @@
-import { delay } from '@grupo-eagle/lib-eagle';
+import { delay } from '../utils';
 
 class DynamicStatusLogger {
   private alreadyLogged = false;
