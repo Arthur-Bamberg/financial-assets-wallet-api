@@ -10,6 +10,10 @@ export class AssetsService {
     private readonly financeService: FinanceService,
   ) {}
 
+  async findAll() {
+    return this.prismaService.asset.findMany();
+  }
+
   async updatePrices(walletId: number): Promise<void> {
     const tenMinutesAgo = subtractMinutes(10);
 
